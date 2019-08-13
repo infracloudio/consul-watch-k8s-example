@@ -14,7 +14,7 @@
          "key": "mykey1",
          "handler_type": "http",
          "http_handler_config": {
-         "path":"https://localhost:7001",
+         "path":"http://localhost:7001",
          "method": "POST",
          "tls_skip_verify": false
          }
