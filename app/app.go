@@ -14,7 +14,7 @@ import (
 
 const (
 	backend     = "consul"
-	backendAddr = "172.17.0.14:8500"
+	backendAddr = "myconsul-consul-server.default.svc.cluster.local:8500"
 	backendPath = "mykey1"
 	configType  = "json"
 )

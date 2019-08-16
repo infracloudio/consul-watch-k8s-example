@@ -3,21 +3,17 @@
    "datacenter":"minidc",
    "data_dir":"/consul/data",
    "log_level":"INFO",
-   "enable_syslog":true,
    "leave_on_terminate":true,
-   "start_join": [
-        "172.17.0.14"
-    ],
    "watches":[
       {
          "type": "key",
          "key": "mykey1",
          "handler_type": "http",
          "http_handler_config": {
-         "path":"http://localhost:7001",
-         "method": "POST",
-         "tls_skip_verify": false
+           "path":"http://localhost:7001",
+           "method": "POST",
+           "tls_skip_verify": false
          }
-      }
+     }
    ]
 }

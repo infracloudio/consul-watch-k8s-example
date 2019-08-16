@@ -9,7 +9,7 @@ spec:
   
   containers:
   - name: myconsul-client
-    image: docker.io/incrediblehulk/consul-client-new 
+    image: docker.io/incrediblehulk/consul-client-auto
     ports:
     - containerPort: 7080
       name: myconsul-client
@@ -39,7 +39,7 @@ spec:
       mountPath: /var/log
 
   - name: myconsul-app
-    image: docker.io/incrediblehulk/ubuntu-app
+    image: docker.io/incrediblehulk/consul-app
     ports:
     - containerPort: 80
     ports:

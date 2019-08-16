@@ -48,37 +48,6 @@ kubectl apply -f myconsul-app-client.yaml
 ```
 - Note: This will deploy two containers in a single pod, one with consul agent and other with the app itself
 
-5. Editing Application pod 
-- Edit the application code `app.go` with proper consul-server `ip address`, `KV name` and `KV format` referred from the previous step.
-- Add the Application dependencies
-```
-kubectl exec -it myconsul-app-client -c myconsul-app -- /bin/sh
-```
-- Add the following GO packages
-```
-go get github.com/spf13/viper
-```
-```
-go get github.com/xordataexchange/crypt/config
-```
-- Copy `app.go` in the container
-
-- Run the application
-```
-go run app.go
-```
-
-6. Connect Consul Agent to the Consul server
-- Access `myconsul-client` container cli
-```
-kubectl exec -it myconsul-app-client -c myconsul-client -- /bin/sh
-```
-- Edit the Consul server ip in Config file `/consul/config/config.json for joining client with server
-
-- Run the following Command to connect Consul Client to Consul server (Change the ip address if necessary)
-```
-consul agent --config-dir=/consul/config -retry-join 172.17.0.14
-```
 
 ### Verfication
 - Application at initialization will read config values from Consul KV store and print on its CLI.
