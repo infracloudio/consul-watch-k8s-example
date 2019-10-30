@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 # Install.
 RUN \
@@ -7,7 +7,7 @@ RUN \
   apt-get -y upgrade && \
   apt-get install -y build-essential && \
   apt-get install -y software-properties-common && \
-  apt-get install -y byobu curl git htop man unzip vim wget nano rsyslog && \
+  apt-get install -y curl vim wget python3-pip && \
   curl https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz | tar xzf - -C / && \
   mv /go /goroot && \
   mkdir /app && \
@@ -23,10 +23,12 @@ RUN mkdir -p /consul/data && \
     mkdir -p /scripts && \
     ln -sf /var/run/log /var/run/syslog
 
+ADD scripts/add_watches/requirements.txt /scripts
+
+RUN pip3 install -r /scripts/requirements.txt
+
 ADD scripts/. /scripts
 
-ADD config.json /consul/config
-
-ENTRYPOINT ["/scripts/run-script.sh"]
+CMD ["/scripts/run-script.sh"]
 
 EXPOSE 7080 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp 8000

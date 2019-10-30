@@ -2,14 +2,44 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: myconsul-app-client
+  annotations:
+    iam.amazonaws.com/role: EKS-QA
 spec:
   volumes:
   - name: shared-logs 
     emptyDir: {}
+  - name: config
+    emptyDir: {}
   
+  initContainers:
+  - name: create-consul-config
+    image: cshintov/consul-client:1.6.1.encrypt.retry
+    imagePullPolicy: Always
+    command:
+    - "/scripts/init.sh"
+
+    volumeMounts:
+    - name: config
+      mountPath: /config
+
   containers:
+  - name: myconsul-app
+    image: cshintov/consul-app:local
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 80
+    ports:
+    - containerPort: 6080
+    
+    volumeMounts:
+    - name: shared-logs
+      mountPath: /usr/share/ubuntu 
+
   - name: myconsul-client
-    image: docker.io/incrediblehulk/consul-client-auto
+    image: cshintov/consul-client:1.6.1.encrypt.retry
+    imagePullPolicy: Always
+    # command: [ "/bin/bash", "-c", "--" ]
+    # args: [ "while true; do sleep 30; done;" ]
     ports:
     - containerPort: 7080
       name: myconsul-client
@@ -37,17 +67,8 @@ spec:
     volumeMounts:
     - name: shared-logs
       mountPath: /var/log
-
-  - name: myconsul-app
-    image: docker.io/incrediblehulk/consul-app
-    ports:
-    - containerPort: 80
-    ports:
-    - containerPort: 6080
-    
-    volumeMounts:
-    - name: shared-logs
-      mountPath: /usr/share/ubuntu 
+    - name: config
+      mountPath: /consul/config
 
 ---
 apiVersion: v1

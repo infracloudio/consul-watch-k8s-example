@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 # Install.
 RUN \
@@ -7,10 +7,9 @@ RUN \
   apt-get -y upgrade && \
   apt-get install -y build-essential && \
   apt-get install -y software-properties-common && \
-  apt-get install -y byobu curl git htop man unzip vim wget nano && \
+  apt-get install -y byobu curl && \
   curl https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz | tar xzf - -C / && \
   mv /go /goroot && \
-  mkdir /app && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/lib/apt/lists/*
 
@@ -20,7 +19,10 @@ ENV GOROOT=/goroot \
     GOBIN=/gopath/bin \
     PATH=${PATH}:/goroot/bin:/gopath/bin
 
-ADD app /app/
+WORKDIR app
+COPY . /app/
+
+COPY config.json /var/log/config.json
 
 CMD ["/app/app"]
 

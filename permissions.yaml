@@ -1,0 +1,27 @@
+# Role and rolebinding for consul client to list all consul server pods 
+# for the purpose of auto-joining the internal consul cluster.
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: consul-client
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: consul-client-role-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: consul-client
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,19 @@
+{
+   "server":false,
+   "datacenter":"kvdc1-consul-qa-travel-nextgen-nv-aws",
+   "data_dir":"/consul/data",
+   "log_level":"INFO",
+   "leave_on_terminate":true,
+   "watches":[
+      {
+         "type": "key",
+         "key": "mykey1",
+         "handler_type": "http",
+         "http_handler_config": {
+           "path":"http://localhost:7001",
+           "method": "POST",
+           "tls_skip_verify": false
+         }
+     }
+   ]
+}
